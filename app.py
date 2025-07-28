@@ -5,21 +5,30 @@ from sklearn.linear_model import LinearRegression
 import joblib
 import streamlit.components.v1 as components
 
-# Google Analytics (gtag.js) injection
+# Inject Google Analytics tracking tag into main page using full page width
 components.html(
     """
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5XZ4PKNX7D"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5XZ4PKNX7D');
-</script>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Google Analytics Embed</title>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-5XZ4PKNX7D"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-5XZ4PKNX7D');
+      </script>
+    </head>
+    <body>
+      <p style="font-size:12px;">Google Analytics Initialized</p>
+    </body>
+    </html>
     """,
-    height=0,
+    height=50  # Small but visible, avoids iframe blocking entirely
 )
+
 
 # Load your trained model (make sure you save it using joblib.dump)
 model = joblib.load("electricity_bill_model.pkl")  # update with your actual model filename
