@@ -9,13 +9,13 @@ import streamlit.components.v1 as components
 components.html(
     """
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q9FZRL0QEX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5XZ4PKNX7D"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-Q9FZRL0QEX');
+  gtag('config', 'G-5XZ4PKNX7D');
 </script>
     """,
     height=0,

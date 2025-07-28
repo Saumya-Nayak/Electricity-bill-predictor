@@ -3,6 +3,23 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import joblib
+import streamlit.components.v1 as components
+
+# Google Analytics (gtag.js) injection
+components.html(
+    """
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q9FZRL0QEX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Q9FZRL0QEX');
+</script>
+    """,
+    height=0,
+)
 
 # Load your trained model (make sure you save it using joblib.dump)
 model = joblib.load("electricity_bill_model.pkl")  # update with your actual model filename
