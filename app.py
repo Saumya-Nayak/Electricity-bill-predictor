@@ -49,6 +49,14 @@ components.html(
         gtag('js', new Date());
         gtag('config', 'G-5XZ4PKNX7D');
       </script>
+      <script>
+  gtag('event', 'page_view', {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
+</script>
+
     </head>
     <body>
       <p style="font-size:12px;">Google Analytics Initialized</p>
