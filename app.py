@@ -4,8 +4,37 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 import joblib
 import streamlit.components.v1 as components
+import requests
+import uuid
+
+# Google Analytics config
+MEASUREMENT_ID = "G-5XZ4PKNX7D"
+API_SECRET = "8OFt94pyTcm_uXuha7IYQw"  # From GA4
+CLIENT_ID = str(uuid.uuid4())  # Random client ID for session
+
+# Function to send event
+def send_event(event_name, event_params={}):
+    url = f"https://www.google-analytics.com/mp/collect?measurement_id={MEASUREMENT_ID}&api_secret={API_SECRET}"
+    payload = {
+        "client_id": CLIENT_ID,
+        "events": [
+            {
+                "name": event_name,
+                "params": event_params
+            }
+        ]
+    }
+    response = requests.post(url, json=payload)
+    return response.status_code == 204
 
 # Inject Google Analytics tracking tag into main page using full page width
+
+
+
+# Load your trained model (make sure you save it using joblib.dump)
+model = joblib.load("electricity_bill_model.pkl")  # update with your actual model filename
+
+st.set_page_config(page_title="Electricity Bill Predictor")
 components.html(
     """
     <!DOCTYPE html>
@@ -26,14 +55,8 @@ components.html(
     </body>
     </html>
     """,
-    height=50  # Small but visible, avoids iframe blocking entirely
+    height=100  # Small but visible, avoids iframe blocking entirely
 )
-
-
-# Load your trained model (make sure you save it using joblib.dump)
-model = joblib.load("electricity_bill_model.pkl")  # update with your actual model filename
-
-st.set_page_config(page_title="Electricity Bill Predictor")
 st.title("⚡ Electricity Bill Prediction")
 st.markdown("Enter your household usage details below:")
 
@@ -59,3 +82,11 @@ input_data = pd.DataFrame([[fan_hours, ac_hours, geyser_hours, fridge_encoded, r
 if st.button("Predict Bill"):
     prediction = model.predict(input_data)
     st.success(f"Estimated Monthly Bill: ₹{prediction[0]:.2f}")
+  # Track event
+    send_event("predict_bill", {
+        "bill_amount": float(prediction[0]),
+        "residents": residents,
+        "weather": weather,
+        "fridge": fridge_encoded,
+        "ac_hours": ac_hours
+    })
